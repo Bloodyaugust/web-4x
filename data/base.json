@@ -1,0 +1,81 @@
+{
+	"sheets": [
+		{
+			"name": "planets",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "type"
+				},
+				{
+					"typeStr": "16",
+					"name": "sizeRange"
+				},
+				{
+					"typeStr": "4",
+					"name": "habitability",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "weight",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"type": "terran",
+					"habitability": 1,
+					"weight": 1,
+					"sizeRange": [
+						1,
+						5
+					]
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "stars",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "class"
+				},
+				{
+					"typeStr": "16",
+					"name": "possibleWorlds",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "weight",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"class": "G",
+					"possibleWorlds": [
+						3,
+						8
+					],
+					"weight": 1
+				},
+				{
+					"class": "M",
+					"weight": 5,
+					"possibleWorlds": [
+						0,
+						3
+					]
+				}
+			],
+			"separators": [],
+			"props": {}
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}
