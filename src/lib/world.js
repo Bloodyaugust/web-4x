@@ -21,6 +21,8 @@ class World {
     entity.id = uuid();
     entity.world = world;
     this.entities[entity.id] = entity;
+
+    return entity;
   }
 
   addSystem(system) {
