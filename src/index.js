@@ -58,9 +58,9 @@ world.addComponent('VELOCITY', entityID2, {
 });
 
 function update() {
-  // console.time('systems');
+  console.time('systems');
   world.step();
-  // console.timeEnd('systems');
+  console.timeEnd('systems');
   setTimeout(update, 1000);
 }
 
