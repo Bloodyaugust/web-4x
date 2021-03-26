@@ -51,13 +51,13 @@ class World {
   queryAll() {
     return [...new Set(this.components.map((component) => {
       return this.entities[component.name];
-    }).flat())];
+    }).flat())] || [];
   }
 
   queryIntersection(components) {
     return components.map((component) => {
       return this.entities[component.name];
-    }).reduce((a, b) => a.filter(c => b.includes(c)));
+    }).reduce((a, b) => a.filter(c => b.includes(c))) || [];
   }
 }
 

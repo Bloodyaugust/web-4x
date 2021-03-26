@@ -9,4 +9,12 @@ export default class Planet extends Entity {
     this.components.push(new Owner(player));
     this.components.push(new Population(player ? 5 : 0));
   }
+
+  colonize(startingPopulation = 1) {
+    this.getComponent(Population).amount = startingPopulation;
+  }
+
+  own(player) {
+    this.getComponent(Owner).player = player;
+  }
 }
