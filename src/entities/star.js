@@ -35,4 +35,20 @@ export default class Star extends Entity {
       planet.own(player);
     });
   }
+
+  toJSON() {
+    const owner = this.getComponent(Owner);
+    const position = this.getComponent(Position);
+    const starData = this.getComponent(StarData);
+
+    return {
+      data: {
+        planets: starData.planets.length,
+        spectralClass: starData.spectralClass
+      },
+      position: position,
+      owner: owner.player ? owner.player.id : 'None',
+      id: this.id
+    };
+  }
 }

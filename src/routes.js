@@ -12,28 +12,15 @@ export default function initializeRoutes(app, world) {
     console.log('Getting all fleet entities...');
   
     response.json(world.queryIntersection([FleetComposition]).map((fleet) => {
-      const fleetComposition = fleet.getComponent(FleetComposition);
-      const fleetState = fleet.getComponent(FleetState);
-
-      return {
-        id: fleet.id,
-        composition: {
-          colony: fleetComposition.colony,
-          frigate: fleetComposition.frigate,
-        },
-        state: fleet.getComponent(FleetState).state
-      };
+      return fleet.toJSON();
     }));
   });
 
   app.get('/planet', (request, response) => {
     console.log('Getting all planet entities...');
   
-    response.json(world.queryIntersection([Population]).map((entity) => {
-      return {
-        population: entity.getComponent(Population),
-        id: entity.id
-      };
+    response.json(world.queryIntersection([Population]).map((planet) => {
+      return planet.toJSON();
     }).sort((a, b) => {
       return b.population.amount - a.population.amount;
     }));
@@ -43,19 +30,16 @@ export default function initializeRoutes(app, world) {
     console.log('Getting all player entities...');
   
     response.json(world.queryIntersection([Bank]).map((player) => {
-      return {
-        id: player.id,
-        bank: player.getComponent(Bank),
-        ownedEntities: world.queryIntersection([Owner]).filter((ownedEntity) => {
-          return player === ownedEntity.getComponent(Owner).player;
-        }).map((playerEntity) => {
-          return {
-            type: playerEntity.constructor.name,
-            id: playerEntity.id
-          };
-        })
-      };
+      return player.toJSON();
     }));
+  });
+  app.get('/player/:id', (request, response) => {
+    const { id } = request.params;
+    const player = world.entities[id];
+
+    console.log(`Getting player: ${id}`);
+
+    response.json(player);
   });
   
   app.get('/position', (request, response) => {
@@ -69,18 +53,8 @@ export default function initializeRoutes(app, world) {
   app.get('/star', (request, response) => {
     console.log('Getting all star entities...');
   
-    response.json(world.queryIntersection([StarData]).map((entity) => {
-      const starData = entity.getComponent(StarData);
-  
-      return {
-        data: {
-          planets: starData.planets.length,
-          spectralClass: starData.spectralClass
-        },
-        position: entity.getComponent(Position),
-        owner: entity.getComponent(Owner).player ? entity.getComponent(Owner).player.id : 'None',
-        id: entity.id
-      };
+    response.json(world.queryIntersection([StarData]).map((star) => {
+      return star.toJSON();
     }));
   });
 }

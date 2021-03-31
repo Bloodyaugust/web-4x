@@ -17,4 +17,11 @@ export default class Planet extends Entity {
   own(player) {
     this.getComponent(Owner).player = player;
   }
+
+  toJSON() {
+    return {
+      population: this.getComponent(Population),
+      id: this.id
+    };
+  }
 }

@@ -1,6 +1,8 @@
 class Entity {
   constructor() {
     this.components = [];
+    this.id = null;
+    this.world = null;
   }
 
   getComponent(componentClass) {

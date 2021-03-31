@@ -19,4 +19,18 @@ export default class Fleet extends Entity {
   target(star) {
     this.getComponent(FleetState).target = star;
   }
+
+  toJSON() {
+    const fleetComposition = this.getComponent(FleetComposition);
+    const fleetState = this.getComponent(FleetState);
+
+    return {
+      id: this.id,
+      composition: {
+        colony: fleetComposition.colony,
+        frigate: fleetComposition.frigate,
+      },
+      state: fleetState.state
+    };
+  }
 }
