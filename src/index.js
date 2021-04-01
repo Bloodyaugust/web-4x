@@ -109,7 +109,8 @@ function generateGalaxy() {
   playerStar.getPlanets()[0].colonize();
 
   const playerFleet = world.addEntity(new Fleet(player, {
-    colony: 1
+    colony: 1,
+    frigate: 1,
   }, playerStar));
   playerFleet.target(starEntities.find((star) => {
     return star.getPlanets().length > 0 && star !== playerStar;

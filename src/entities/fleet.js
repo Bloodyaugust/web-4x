@@ -4,7 +4,7 @@ import FleetState from '../components/fleet/fleet-state.js';
 import Owner from '../components/owner.js';
 import Position from '../components/position.js';
 import Inbox from '../components/inbox.js';
-import { FleetCreatedEvent } from '../objects/events.js';
+import { FleetCreatedEvent, FleetTargetedEvent } from '../objects/events.js';
 
 export default class Fleet extends Entity {
   constructor(player, composition, star) {
@@ -24,6 +24,7 @@ export default class Fleet extends Entity {
 
   target(star) {
     this.getComponent(FleetState).target = star;
+    this.getComponent(Owner).player.getComponent(Inbox).events.push(new FleetTargetedEvent(this));
   }
 
   toJSON() {

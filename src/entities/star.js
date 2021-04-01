@@ -3,6 +3,8 @@ import Owner from '../components/owner.js';
 import Population from '../components/population.js';
 import Position from '../components/position.js';
 import StarData from '../components/star-data.js';
+import Inbox from '../components/inbox.js';
+import { SystemCapturedEvent } from '../objects/events.js';
 
 export default class Star extends Entity {
   constructor(data) {
@@ -34,6 +36,7 @@ export default class Star extends Entity {
     this.getComponent(StarData).planets.forEach((planet) => {
       planet.own(player);
     });
+    player.getComponent(Inbox).events.push(new SystemCapturedEvent(this));
   }
 
   toJSON() {

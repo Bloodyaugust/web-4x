@@ -15,7 +15,15 @@ export default class FleetMovement extends System {
   update(deltaTime) {
     const fleets = this.world.queryIntersection([FleetState]);
 
-    fleets.forEach((fleet) => {
+    fleets.filter((fleet) => {
+      const fleetComposition = fleet.getComponent(FleetComposition);
+      let shipCount = 0;
+
+      shipCount += fleetComposition.colony;
+      shipCount += fleetComposition.frigate;
+
+      return shipCount > 0;
+    }).forEach((fleet) => {
       const fleetState = fleet.getComponent(FleetState);
       const owningPlayer = fleet.getComponent(Owner).player;
       const position = fleet.getComponent(Position).position;

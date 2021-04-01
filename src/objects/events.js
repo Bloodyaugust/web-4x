@@ -8,6 +8,8 @@ const EVENTS = Object.freeze({
   FLEET_ARRIVED: 2,
   PLANET_COLONIZED: 3,
   FLEET_CREATED: 4,
+  SYSTEM_CAPTURED: 5,
+  FLEET_TARGETED: 6,
 });
 
 const EVENT_STRINGS = Object.freeze({
@@ -16,6 +18,8 @@ const EVENT_STRINGS = Object.freeze({
   2: 'Fleet arrived at target',
   3: 'Planet colonized',
   4: 'Fleet created',
+  5: 'System captured',
+  6: 'Fleet target set',
 });
 
 class GameEvent {
@@ -45,6 +49,15 @@ class FleetCreatedEvent extends GameEvent {
   }
 }
 
+class FleetTargetedEvent extends GameEvent {
+  constructor(fleet) {
+    super(EVENTS.FLEET_TARGETED);
+
+    this.fleet = fleet.id;
+    this.target = fleet.getComponent(FleetState).target.id;
+  }
+}
+
 class ColonizeEvent extends GameEvent {
   constructor(planet) {
     super(EVENTS.PLANET_COLONIZED);
@@ -54,10 +67,20 @@ class ColonizeEvent extends GameEvent {
   }
 }
 
+class SystemCapturedEvent extends GameEvent {
+  constructor(system) {
+    super(EVENTS.SYSTEM_CAPTURED);
+
+    this.system = system.id;
+  }
+}
+
 export {
   ColonizeEvent,
   EVENTS,
   FleetArrivedEvent,
   FleetCreatedEvent,
+  FleetTargetedEvent,
+  SystemCapturedEvent,
   GameEvent
 };
