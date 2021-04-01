@@ -5,7 +5,7 @@ import Position from '../components/position.js';
 import Victor from 'victor';
 import Owner from '../components/owner.js';
 import Inbox from '../components/inbox.js';
-import { EVENTS, FleetEvent } from '../objects/events.js';
+import { FleetArrivedEvent } from '../objects/events.js';
 
 export default class FleetMovement extends System {
   constructor() {
@@ -35,7 +35,7 @@ export default class FleetMovement extends System {
           fleet.getComponent(Position).position = targetPosition.clone();
           fleetState.setState('IDLE');
           fleetState.target.own(owningPlayer);
-          owningPlayer.getComponent(Inbox).events.push(new FleetEvent(fleet, EVENTS.FLEET_ARRIVED));
+          owningPlayer.getComponent(Inbox).events.push(new FleetArrivedEvent(fleet));
         }
       }
     });

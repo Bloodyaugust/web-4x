@@ -3,6 +3,8 @@ import FleetComposition from '../components/fleet/fleet-composition.js';
 import FleetState from '../components/fleet/fleet-state.js';
 import Owner from '../components/owner.js';
 import Position from '../components/position.js';
+import Inbox from '../components/inbox.js';
+import { FleetCreatedEvent } from '../objects/events.js';
 
 export default class Fleet extends Entity {
   constructor(player, composition, star) {
@@ -12,6 +14,8 @@ export default class Fleet extends Entity {
     this.components.push(new FleetState(star));
     this.components.push(new Owner(player));
     this.components.push(new Position(star.getComponent(Position).position.clone()));
+
+    player.getComponent(Inbox).events.push(new FleetCreatedEvent(this));
   }
 
   setColonizing(colonize) {
