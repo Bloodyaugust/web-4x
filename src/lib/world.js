@@ -16,6 +16,10 @@ class World {
     const world = this;
 
     entity.components.forEach((component) => {
+      if (!world.entities[component.constructor.name]) {
+        throw new Error(`Component ${component.constructor.name} not registered!`);
+      }
+
       world.entities[component.constructor.name].push(entity);
     });
 

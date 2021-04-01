@@ -9,6 +9,7 @@ import initializeRoutes from './routes.js';
 import { World } from './lib/world.js';
 
 // Components
+import AI from './components/ai.js';
 import Bank from './components/bank.js';
 import FleetComposition from './components/fleet/fleet-composition.js';
 import FleetState from './components/fleet/fleet-state.js';
@@ -40,6 +41,7 @@ global.chance = new chance();
 const world = new World();
 
 // Register all components
+world.registerComponent(AI);
 world.registerComponent(Bank);
 world.registerComponent(FleetComposition);
 world.registerComponent(FleetState);
