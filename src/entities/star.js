@@ -46,7 +46,7 @@ export default class Star extends Entity {
         planets: starData.planets.length,
         spectralClass: starData.spectralClass
       },
-      position: position,
+      position: position.position,
       owner: owner.player ? owner.player.id : 'None',
       id: this.id
     };

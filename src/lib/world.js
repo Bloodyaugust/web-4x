@@ -4,6 +4,7 @@ class World {
   constructor() {
     this.components = [];
     this.entities = {};
+    this.events = [];
     this.systems = [];
 
     this.startTime = new Date().valueOf();

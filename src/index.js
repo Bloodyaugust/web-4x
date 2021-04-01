@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import chance from 'chance';
+import cors from 'cors';
 import express from 'express';
 import { inspect } from 'util';
 import { getSheet } from './lib/castledb-interface.js';
@@ -11,6 +12,7 @@ import { World } from './lib/world.js';
 import Bank from './components/bank.js';
 import FleetComposition from './components/fleet/fleet-composition.js';
 import FleetState from './components/fleet/fleet-state.js';
+import Inbox from './components/inbox.js';
 import Owner from './components/owner.js';
 import Population from './components/population.js';
 import Position from './components/position.js';
@@ -26,9 +28,12 @@ import Star from './entities/star.js';
 import Colonization from './systems/colonization.js';
 import Income from './systems/income.js';
 import PopulationGrowth from './systems/population-growth.js';
+import FleetMovement from './systems/fleet-movement.js';
+import Victor from 'victor';
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
+expressApp.use(cors());
 
 global.chance = new chance();
 
@@ -38,12 +43,14 @@ const world = new World();
 world.registerComponent(Bank);
 world.registerComponent(FleetComposition);
 world.registerComponent(FleetState);
+world.registerComponent(Inbox);
 world.registerComponent(Owner);
 world.registerComponent(Population);
 world.registerComponent(Position);
 world.registerComponent(StarData);
 
 // Add all systems
+world.addSystem(new FleetMovement());
 world.addSystem(new Colonization());
 world.addSystem(new Income());
 world.addSystem(new PopulationGrowth());
@@ -61,6 +68,10 @@ function generateGalaxy() {
   for (let i = 0; i < 100; i++) {
     const pickedStar = global.chance.weighted(stars, starWeights);
     const newStar = world.addEntity(new Star({
+      position: new Victor(0, 0).randomize(
+        new Victor(-100, -100),
+        new Victor(100, 100)
+      ),
       star: pickedStar
     }));
     const newStarData = newStar.getComponent(StarData);
@@ -99,7 +110,7 @@ function generateGalaxy() {
 
   const playerFleet = world.addEntity(new Fleet(player, {
     colony: 1
-  }));
+  }, playerStar));
   playerFleet.target(starEntities.find((star) => {
     return star.getPlanets().length > 0 && star !== playerStar;
   }));

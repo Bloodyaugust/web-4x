@@ -6,11 +6,12 @@ const FLEET_STATES = {
 };
 
 export default class FleetState extends Component {
-  constructor() {
+  constructor(star) {
     super();
 
     this.colonizeTarget = false;
-    this.target = null;
+    this.state = null;
+    this.target = star;
 
     this.setState('IDLE');
   }
