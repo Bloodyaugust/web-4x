@@ -15,6 +15,10 @@ export default class Star extends Entity {
     this.components.push(new StarData(data.star.class));
   }
 
+  getOwner() {
+    return this.getComponent(Owner).player;
+  }
+
   addPlanet(planet) {
     this.getComponent(StarData).planets.push(planet);
   }

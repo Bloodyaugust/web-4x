@@ -1,6 +1,5 @@
 import { System } from '../lib/system.js';
 import Bank from '../components/bank.js';
-import Owner from '../components/owner.js';
 import Population from '../components/population.js';
 
 export default class Income extends System {
@@ -13,7 +12,7 @@ export default class Income extends System {
 
     entities.forEach((entity) => {
       const population = entity.getComponent(Population);
-      const owningPlayer = entity.getComponent(Owner).player;
+      const owningPlayer = entity.getOwner();
 
       if (population.amount > 0 && owningPlayer) {
         const playerBank = owningPlayer.getComponent(Bank);

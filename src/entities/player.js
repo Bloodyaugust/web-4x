@@ -22,7 +22,7 @@ export default class Player extends Entity {
       events: this.getComponent(Inbox).events,
       bank: this.getComponent(Bank),
       ownedEntities: this.world.queryIntersection([Owner]).filter((ownedEntity) => {
-        return this === ownedEntity.getComponent(Owner).player;
+        return this === ownedEntity.getOwner();
       }).map((playerEntity) => {
         return {
           type: playerEntity.constructor.name,

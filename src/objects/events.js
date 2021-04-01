@@ -1,6 +1,5 @@
 import { v4 as uuid } from 'uuid';
 import FleetState from "../components/fleet/fleet-state.js";
-import Owner from "../components/owner.js";
 
 const EVENTS = Object.freeze({
   GAME_EVENT: 0,
@@ -63,7 +62,7 @@ class ColonizeEvent extends GameEvent {
     super(EVENTS.PLANET_COLONIZED);
 
     this.planet = planet.id;
-    this.player = planet.getComponent(Owner).player.id;
+    this.player = planet.getOwner().id;
   }
 }
 

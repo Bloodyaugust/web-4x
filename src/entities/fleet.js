@@ -18,6 +18,10 @@ export default class Fleet extends Entity {
     player.addEvent(new FleetCreatedEvent(this));
   }
 
+  getOwner() {
+    return this.getComponent(Owner).player;
+  }
+
   setColonizing(colonize) {
     this.getComponent(FleetState).colonizeTarget = colonize;
   }

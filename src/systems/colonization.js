@@ -1,8 +1,6 @@
 import { System } from '../lib/system.js';
 import FleetComposition from '../components/fleet/fleet-composition.js';
 import FleetState from '../components/fleet/fleet-state.js';
-import Owner from '../components/owner.js';
-import Inbox from '../components/inbox.js';
 import { ColonizeEvent } from '../objects/events.js';
 import Position from '../components/position.js';
 
@@ -26,7 +24,7 @@ export default class Colonization extends System {
         while (fleetComposition.colony > 0 && colonizedPlanets < uncolonizedPlanets.length) {
           uncolonizedPlanets[colonizedPlanets].colonize();
           fleetComposition.colony--;
-          entity.getComponent(Owner).player.addEvent(new ColonizeEvent(uncolonizedPlanets[colonizedPlanets]));
+          entity.getOwner().addEvent(new ColonizeEvent(uncolonizedPlanets[colonizedPlanets]));
           colonizedPlanets++;
         }
       }
