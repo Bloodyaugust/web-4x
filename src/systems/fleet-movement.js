@@ -43,7 +43,7 @@ export default class FleetMovement extends System {
           fleet.getComponent(Position).position = targetPosition.clone();
           fleetState.setState('IDLE');
           fleetState.target.own(owningPlayer);
-          owningPlayer.getComponent(Inbox).events.push(new FleetArrivedEvent(fleet));
+          owningPlayer.addEvent(new FleetArrivedEvent(fleet));
         }
       }
     });

@@ -36,7 +36,7 @@ export default class Star extends Entity {
     this.getComponent(StarData).planets.forEach((planet) => {
       planet.own(player);
     });
-    player.getComponent(Inbox).events.push(new SystemCapturedEvent(this));
+    player.addEvent(new SystemCapturedEvent(this));
   }
 
   toJSON() {

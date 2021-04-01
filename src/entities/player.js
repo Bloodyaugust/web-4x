@@ -11,6 +11,10 @@ export default class Player extends Entity {
     this.components.push(new Inbox());
   }
 
+  addEvent(event) {
+    this.getComponent(Inbox).events.push(event);
+  }
+
   toJSON() {
     // console.time('player response');
     const response = {

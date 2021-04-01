@@ -15,7 +15,7 @@ export default class Fleet extends Entity {
     this.components.push(new Owner(player));
     this.components.push(new Position(star.getComponent(Position).position.clone()));
 
-    player.getComponent(Inbox).events.push(new FleetCreatedEvent(this));
+    player.addEvent(new FleetCreatedEvent(this));
   }
 
   setColonizing(colonize) {
@@ -24,7 +24,7 @@ export default class Fleet extends Entity {
 
   target(star) {
     this.getComponent(FleetState).target = star;
-    this.getComponent(Owner).player.getComponent(Inbox).events.push(new FleetTargetedEvent(this));
+    this.getComponent(Owner).player.addEvent(new FleetTargetedEvent(this));
   }
 
   toJSON() {

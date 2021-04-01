@@ -26,7 +26,7 @@ export default class Colonization extends System {
         while (fleetComposition.colony > 0 && colonizedPlanets < uncolonizedPlanets.length) {
           uncolonizedPlanets[colonizedPlanets].colonize();
           fleetComposition.colony--;
-          entity.getComponent(Owner).player.getComponent(Inbox).events.push(new ColonizeEvent(uncolonizedPlanets[colonizedPlanets]));
+          entity.getComponent(Owner).player.addEvent(new ColonizeEvent(uncolonizedPlanets[colonizedPlanets]));
           colonizedPlanets++;
         }
       }
