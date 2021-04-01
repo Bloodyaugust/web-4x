@@ -102,30 +102,11 @@ function generateGalaxy() {
     }
   }
 
-  const starEntities = world.queryIntersection([StarData]);
-  const playerStar = starEntities.find((star) => {
-    return star.getPlanets().length > 0;
-  });
-
-  playerStar.own(player);
-  playerStar.getPlanets()[0].colonize();
-
-  const playerFleet = world.addEntity(new Fleet(player, {
-    colony: 1,
-    frigate: 1,
-  }, playerStar));
-  playerFleet.target(starEntities.find((star) => {
-    return star.getPlanets().length > 0 && star !== playerStar;
-  }));
-  playerFleet.setColonizing(true);
-
   console.log(planetTypes);
   console.log(starClasses);
 
   console.timeEnd('generate');
 }
-
-const player = world.addEntity(new Player());
 
 generateGalaxy();
 

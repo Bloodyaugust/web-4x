@@ -9,6 +9,7 @@ import Position from './components/position.js';
 import StarData from './components/star-data.js';
 import Fleet from './entities/fleet.js';
 import Player from './entities/player.js';
+import newPlayer from './lib/new-player.js';
 
 export default function initializeRoutes(app, world) {
   app.get('/event', (request, response) => {
@@ -68,7 +69,7 @@ export default function initializeRoutes(app, world) {
   });
   app.post('/player', (request, response) => {
     const { ai } = request.body;
-    const player = world.addEntity(new Player(ai));
+    const player = newPlayer(world, ai);
 
     console.log(`Created a new${ai ? ' ai' : ''} player: ${player.id}`);
   

@@ -13,7 +13,7 @@ export default class FleetState extends Component {
     this.state = null;
     this.target = star;
 
-    this.setState('IDLE');
+    this.setState('MOVING');
   }
 
   checkState(state) {
