@@ -18,8 +18,34 @@ export default class Fleet extends Entity {
     player.addEvent(new FleetCreatedEvent(this));
   }
 
+  buyShips(ships) {
+    const player = this.getOwner();
+    const fleetComposition = this.getComponent(FleetComposition);
+    const {
+      colony = 0,
+      frigate = 0
+    } = ships;
+    let totalCost = 0;
+
+    totalCost += colony * 1000;
+    totalCost += frigate * 15;
+
+    if (player.spendCredits(totalCost)) {
+      fleetComposition.colony += colony;
+      fleetComposition.frigate += frigate;
+
+      return true;
+    }
+
+    return false;
+  }
+
   getOwner() {
     return this.getComponent(Owner).player;
+  }
+
+  isIdle() {
+    return this.getComponent(FleetState).checkState('IDLE');
   }
 
   setColonizing(colonize) {
@@ -28,7 +54,7 @@ export default class Fleet extends Entity {
 
   target(star) {
     this.getComponent(FleetState).target = star;
-    this.getComponent(Owner).player.addEvent(new FleetTargetedEvent(this));
+    this.getOwner().addEvent(new FleetTargetedEvent(this));
   }
 
   toJSON() {
@@ -42,7 +68,8 @@ export default class Fleet extends Entity {
         frigate: fleetComposition.frigate,
       },
       position: this.getComponent(Position).position,
-      state: fleetState.state
+      state: fleetState.state,
+      target: fleetState.target ? fleetState.target.id : ''
     };
   }
 }

@@ -19,6 +19,10 @@ export default class Star extends Entity {
     return this.getComponent(StarData).spectralClass;
   }
 
+  getDistance(position) {
+    return position.distance(this.getComponent(Position).position);
+  }
+
   getOwner() {
     return this.getComponent(Owner).player;
   }
@@ -40,11 +44,13 @@ export default class Star extends Entity {
   }
 
   own(player) {
-    this.getComponent(Owner).player = player;
-    this.getComponent(StarData).planets.forEach((planet) => {
-      planet.own(player);
-    });
-    player.addEvent(new SystemCapturedEvent(this));
+    if (player !== this.getOwner()) {
+      this.getComponent(Owner).player = player;
+      this.getComponent(StarData).planets.forEach((planet) => {
+        planet.own(player);
+      });
+      player.addEvent(new SystemCapturedEvent(this));
+    }
   }
 
   toJSON() {

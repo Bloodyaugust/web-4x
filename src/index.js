@@ -3,6 +3,7 @@ import chance from 'chance';
 import cors from 'cors';
 import express from 'express';
 import { inspect } from 'util';
+import Victor from 'victor';
 import { getSheet } from './lib/castledb-interface.js';
 import initializeRoutes from './routes.js';
 
@@ -26,11 +27,11 @@ import Player from './entities/player.js';
 import Star from './entities/star.js';
 
 // Systems
+import AISystem from './systems/ai.js';
 import Colonization from './systems/colonization.js';
 import Income from './systems/income.js';
 import PopulationGrowth from './systems/population-growth.js';
 import FleetMovement from './systems/fleet-movement.js';
-import Victor from 'victor';
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
@@ -52,6 +53,7 @@ world.registerComponent(Position);
 world.registerComponent(StarData);
 
 // Add all systems
+world.addSystem(new AISystem());
 world.addSystem(new FleetMovement());
 world.addSystem(new Colonization());
 world.addSystem(new Income());
@@ -69,6 +71,7 @@ function generateGalaxy() {
 
   for (let i = 0; i < 100; i++) {
     const pickedStar = global.chance.weighted(stars, starWeights);
+    // TODO: Currently stars can generate with the exact same location. Look into poisson disk sampling, or maybe brute enforce distance thru regeneration. Is this randomize using floats?
     const newStar = world.addEntity(new Star({
       position: new Victor(0, 0).randomize(
         new Victor(-100, -100),

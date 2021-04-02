@@ -17,7 +17,7 @@ export default class Colonization extends System {
       const fleetState = entity.getComponent(FleetState);
       const position = entity.getComponent(Position).position;
       
-      if (fleetState.colonizeTarget && fleetState.checkState('IDLE') && position.distance(fleetState.target.getComponent(Position).position) <= 0.1 && fleetComposition.colony > 0) {
+      if (fleetState.colonizeTarget && fleetState.checkState('IDLE') && position.distance(fleetState.target.getComponent(Position).position) <= 0.1 && fleetComposition.colony > 0 && fleetState.target.getOwner() === entity.getOwner()) {
         const uncolonizedPlanets = fleetState.target.getUncolonizedPlanets();
         let colonizedPlanets = 0;
 

@@ -3,6 +3,7 @@ import Bank from '../components/bank.js';
 import Owner from '../components/owner.js';
 import Inbox from '../components/inbox.js';
 import AI from '../components/ai.js';
+import FleetState from '../components/fleet/fleet-state.js';
 
 export default class Player extends Entity {
   constructor(ai) {
@@ -18,6 +19,31 @@ export default class Player extends Entity {
 
   addEvent(event) {
     this.getComponent(Inbox).events.push(event);
+  }
+
+  getCredits() {
+    return this.getComponent(Bank).credits;
+  }
+
+  getFleets() {
+    return this.world.queryIntersection([FleetState]).filter((fleet) => {
+      return fleet.getOwner() === this;
+    });
+  }
+
+  spendCredits(amount) {
+    const bank = this.getComponent(Bank);
+
+    if (isNaN(amount)) {
+      throw new Error('Tried to spend NaN credits');
+    }
+
+    if (bank.credits >= amount) {
+      bank.credits -= amount;
+      return true;
+    }
+
+    return false;
   }
 
   isAI() {

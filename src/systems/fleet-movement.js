@@ -5,6 +5,8 @@ import Position from '../components/position.js';
 import Victor from 'victor';
 import { FleetArrivedEvent } from '../objects/events.js';
 
+const fleetSpeed = 2.5;
+
 export default class FleetMovement extends System {
   constructor() {
     super();
@@ -15,10 +17,14 @@ export default class FleetMovement extends System {
 
     fleets.filter((fleet) => {
       const fleetComposition = fleet.getComponent(FleetComposition);
+      const {
+        colony = 0,
+        frigate = 0
+      } = fleetComposition;
       let shipCount = 0;
 
-      shipCount += fleetComposition.colony;
-      shipCount += fleetComposition.frigate;
+      shipCount += colony;
+      shipCount += frigate;
 
       return shipCount > 0;
     }).forEach((fleet) => {
@@ -28,7 +34,7 @@ export default class FleetMovement extends System {
       const targetPosition = fleetState.target.getComponent(Position).position;
       const directionVector = targetPosition.clone().subtract(position).normalize();
       const distanceToTarget = targetPosition.distance(position);
-      const moveDistance = 15 * deltaTime;
+      const moveDistance = fleetSpeed * deltaTime;
       
       if (fleetState.checkState('IDLE') && distanceToTarget > 0.1) {
         fleetState.setState('MOVING');
@@ -40,9 +46,12 @@ export default class FleetMovement extends System {
         } else {
           fleet.getComponent(Position).position = targetPosition.clone();
           fleetState.setState('IDLE');
-          fleetState.target.own(owningPlayer);
           owningPlayer.addEvent(new FleetArrivedEvent(fleet));
         }
+      }
+
+      if (distanceToTarget === 0) {
+        fleetState.target.own(owningPlayer);
       }
     });
   }
