@@ -67,6 +67,7 @@ export default class Fleet extends Entity {
         colony: fleetComposition.colony,
         frigate: fleetComposition.frigate,
       },
+      owner: this.getOwner().id,
       position: this.getComponent(Position).position,
       state: fleetState.state,
       target: fleetState.target ? fleetState.target.id : ''
