@@ -16,8 +16,8 @@ export default function initializeRoutes(app, world) {
     console.log('Getting all events...');
   
     response.json(world.queryIntersection([Inbox]).map((player) => {
-      return player.getComponent(Inbox);
-    }));
+      return player.getComponent(Inbox).events;
+    }).flat());
   });
 
   app.get('/fleet', (request, response) => {
