@@ -4,6 +4,7 @@ import cors from 'cors';
 import express from 'express';
 import { inspect } from 'util';
 import Victor from 'victor';
+import PoissonDiskSampling from 'poisson-disk-sampling';
 import { getSheet } from './lib/castledb-interface.js';
 import initializeRoutes from './routes.js';
 
@@ -62,6 +63,11 @@ world.addSystem(new PopulationGrowth());
 function generateGalaxy() {
   console.time('generate');
 
+  const starPoissonDisk = new PoissonDiskSampling({
+    shape: [100, 100],
+    minDistance: 5,
+    maxDistance: 20,
+  });
   const planets = getSheet('planets');
   const planetWeights = planets.map((planet) => planet.weight);
   const stars = getSheet('stars');
@@ -69,14 +75,18 @@ function generateGalaxy() {
   const planetTypes = {};
   const starClasses = {};
 
-  for (let i = 0; i < 100; i++) {
+  const starPositions = starPoissonDisk.fill().map((point) => {
+    return new Victor(point[0] - 50, point[1] - 50);
+  }).filter((vector) => {
+    return vector.magnitude() <= 35;
+  });
+
+  console.log(starPositions.length);
+
+  starPositions.forEach((position) => {
     const pickedStar = global.chance.weighted(stars, starWeights);
-    // TODO: Currently stars can generate with the exact same location. Look into poisson disk sampling, or maybe brute enforce distance thru regeneration. Is this randomize using floats?
     const newStar = world.addEntity(new Star({
-      position: new Victor(0, 0).randomize(
-        new Victor(-100, -100),
-        new Victor(100, 100)
-      ),
+      position,
       star: pickedStar
     }));
     const newStarData = newStar.getComponent(StarData);
@@ -91,7 +101,7 @@ function generateGalaxy() {
       min: pickedStar.possibleWorlds[0],
       max: pickedStar.possibleWorlds[1]
     });
-    for (let i2 = 0; i2 < numPlanets; i2++) {
+    for (let i = 0; i < numPlanets; i++) {
       const pickedPlanet = global.chance.weighted(planets, planetWeights); // TODO: Pipe into planet entity
       const newPlanet = world.addEntity(new Planet());
 
@@ -103,10 +113,10 @@ function generateGalaxy() {
       //   planetTypes[newPlanet.c.data.planetType] = 1;
       // }
     }
-  }
+  });
 
-  console.log(planetTypes);
-  console.log(starClasses);
+  console.log('Planets: ', planetTypes);
+  console.log('Stars: ', starClasses);
 
   console.timeEnd('generate');
 }
