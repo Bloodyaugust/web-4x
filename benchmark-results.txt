@@ -1,0 +1,4 @@
+#queryIntersection, one component x 28,683,132 ops/sec ±0.49% (92 runs sampled)
+#queryIntersection, two components x 1,883,459 ops/sec ±0.21% (94 runs sampled)
+#entities, direct access x 157,044,165 ops/sec ±0.33% (99 runs sampled)
+#tick x 135,557 ops/sec ±0.13% (100 runs sampled)

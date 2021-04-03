@@ -42,6 +42,14 @@ class World {
     this.entities[component.name] = [];
   }
 
+  removeEntity(removingEntity) {
+    removingEntity.components.forEach((component) => {
+      this.entities[component.constructor.name] = this.entities[component.constructor.name].filter(entity => entity !== removingEntity);
+    });
+
+    delete this.entities[removingEntity.id];
+  }
+
   tick() {
     this.lastFrameTime = this.currentFrameTime;
     this.currentFrameTime = new Date().valueOf();
@@ -51,12 +59,6 @@ class World {
     this.systems.forEach((system) => {
       system.update(deltaTime);
     });
-  }
-
-  queryAll() {
-    return [...new Set(this.components.map((component) => {
-      return this.entities[component.name];
-    }).flat())] || [];
   }
 
   queryIntersection(components) {
