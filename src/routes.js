@@ -71,9 +71,17 @@ export default function initializeRoutes(app, world) {
     const { ai } = request.body;
     const player = newPlayer(world, ai);
 
-    console.log(`Created a new${ai ? ' ai' : ''} player: ${player.id}`);
+    if (player) {
+      console.log(`Created a new${ai ? ' ai' : ''} player: ${player.id}`);
   
-    response.json(player);
+      response.json(player);
+    } else {
+      console.log(`Failed to create a new player, galaxy is full!`);
+  
+      response.json({
+        message: 'Failed to create a new player, galaxy is full!'
+      });
+    }
   });
   app.get('/player/:id', (request, response) => {
     const { id } = request.params;
