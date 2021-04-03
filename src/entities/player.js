@@ -4,6 +4,7 @@ import Owner from '../components/owner.js';
 import Inbox from '../components/inbox.js';
 import AI from '../components/ai.js';
 import FleetState from '../components/fleet/fleet-state.js';
+import StarData from '../components/star-data.js';
 
 export default class Player extends Entity {
   constructor(ai) {
@@ -28,6 +29,12 @@ export default class Player extends Entity {
   getFleets() {
     return this.world.queryIntersection([FleetState]).filter((fleet) => {
       return fleet.getOwner() === this;
+    });
+  }
+
+  getStars() {
+    return this.world.queryIntersection([StarData]).filter((star) => {
+      return star.getOwner() === this;
     });
   }
 

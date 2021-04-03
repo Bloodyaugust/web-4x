@@ -4,7 +4,7 @@ import FleetState from '../components/fleet/fleet-state.js';
 import Owner from '../components/owner.js';
 import Position from '../components/position.js';
 import Inbox from '../components/inbox.js';
-import { FleetCreatedEvent, FleetTargetedEvent } from '../objects/events.js';
+import { FleetCreatedEvent, FleetDamagedEvent, FleetDestroyedEvent, FleetTargetedEvent } from '../objects/events.js';
 
 export default class Fleet extends Entity {
   constructor(player, composition, star) {
@@ -16,6 +16,30 @@ export default class Fleet extends Entity {
     this.components.push(new Position(star.getComponent(Position).position.clone()));
 
     player.addEvent(new FleetCreatedEvent(this));
+  }
+
+  attack(attackingFleet) {
+    const fleetComposition = this.getComponent(FleetComposition);
+    let attackerPower = attackingFleet.getFleetAttackPower();
+    let damage = 0;
+
+    while (attackerPower > 0) {
+      attackerPower--;
+      damage++;
+
+      if (fleetComposition.frigate > 0) {
+        fleetComposition.frigate--;
+      } else if (fleetComposition.colony > 0) {
+        fleetComposition.colony--;
+      } else {
+        this.world.removeEntity(this);
+        this.getOwner().addEvent(new FleetDestroyedEvent(this, attackingFleet));
+        break;
+      }
+    }
+
+    this.getOwner().addEvent(new FleetDamagedEvent(this, attackingFleet, damage));
+    return damage;
   }
 
   buyShips(ships) {
@@ -40,8 +64,31 @@ export default class Fleet extends Entity {
     return false;
   }
 
+  canAttack() {
+    return this.getComponent(FleetComposition).frigate > 0 && this.checkState('IDLE');
+  }
+
+  checkState(state) {
+    return this.getComponent(FleetState).checkState(state);
+  }
+
+  getFleetAttackPower() {
+    const {
+      frigate = 0,
+    } = this.getComponent(FleetComposition);
+    let attackPower = 0;
+
+    attackPower += frigate;
+
+    return attackPower;
+  }
+
   getOwner() {
     return this.getComponent(Owner).player;
+  }
+
+  getPosition() {
+    return this.getComponent(Position).position;
   }
 
   isIdle() {
