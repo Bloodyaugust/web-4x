@@ -30,9 +30,10 @@ import Star from './entities/star.js';
 // Systems
 import AISystem from './systems/ai.js';
 import Colonization from './systems/colonization.js';
+import FleetCombat from './systems/fleet-combat.js';
+import FleetMovement from './systems/fleet-movement.js';
 import Income from './systems/income.js';
 import PopulationGrowth from './systems/population-growth.js';
-import FleetMovement from './systems/fleet-movement.js';
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
@@ -55,8 +56,9 @@ world.registerComponent(StarData);
 
 // Add all systems
 world.addSystem(new AISystem());
-world.addSystem(new FleetMovement());
 world.addSystem(new Colonization());
+world.addSystem(new FleetCombat());
+world.addSystem(new FleetMovement());
 world.addSystem(new Income());
 world.addSystem(new PopulationGrowth());
 
