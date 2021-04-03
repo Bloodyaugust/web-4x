@@ -4,6 +4,7 @@ import FleetState from '../components/fleet/fleet-state.js';
 import Position from '../components/position.js';
 import Victor from 'victor';
 import { FleetArrivedEvent } from '../objects/events.js';
+import { queryNonEmptyFleets } from '../queries.js';
 
 const fleetSpeed = 2.5;
 
@@ -13,21 +14,7 @@ export default class FleetMovement extends System {
   }
 
   update(deltaTime) {
-    const fleets = this.world.queryIntersection([FleetState]);
-
-    fleets.filter((fleet) => {
-      const fleetComposition = fleet.getComponent(FleetComposition);
-      const {
-        colony = 0,
-        frigate = 0
-      } = fleetComposition;
-      let shipCount = 0;
-
-      shipCount += colony;
-      shipCount += frigate;
-
-      return shipCount > 0;
-    }).forEach((fleet) => {
+    queryNonEmptyFleets(this.world).forEach((fleet) => {
       const fleetState = fleet.getComponent(FleetState);
       const owningPlayer = fleet.getOwner();
       const position = fleet.getComponent(Position).position;

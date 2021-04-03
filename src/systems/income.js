@@ -17,7 +17,7 @@ export default class Income extends System {
       if (population.amount > 0 && owningPlayer) {
         const playerBank = owningPlayer.getComponent(Bank);
 
-        playerBank.credits += population.amount * deltaTime;
+        playerBank.credits += population.amount * 100 * deltaTime;
       }
     });
   }
