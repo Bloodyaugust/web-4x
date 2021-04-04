@@ -18,6 +18,8 @@ export default function newPlayer(world, ai) {
   const playerStar = validStars[Math.floor(Math.random() * validStars.length)];
   calledForStars.push(playerStar);
 
+  playerStar.own(player);
+
   const playerFleet = world.addEntity(new Fleet(player, {
     colony: 1,
     frigate: 1,

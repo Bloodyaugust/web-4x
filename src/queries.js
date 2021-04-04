@@ -2,6 +2,24 @@ import FleetComposition from './components/fleet/fleet-composition.js';
 import FleetState from './components/fleet/fleet-state.js';
 import StarData from './components/star-data.js';
 
+function queryClosestEnemyOrUnownedStar(world, fleet) {
+  return world.queryIntersection([StarData]).filter(star => star.getOwner() !== fleet.getOwner()).sort((a, b) => {
+    return a.getDistance(fleet.getPosition()) - b.getDistance(fleet.getPosition());
+  })[0];
+}
+
+function queryClosestOwnedStar(world, fleet) {
+  return world.queryIntersection([StarData]).filter(star => star.getOwner() === fleet.getOwner()).sort((a, b) => {
+    return a.getDistance(fleet.getPosition()) - b.getDistance(fleet.getPosition());
+  })[0];
+}
+
+function queryClosestOwnedStarWithUncolonizedPlanets(world, fleet) {
+  return world.queryIntersection([StarData]).filter(star => star.getOwner() === fleet.getOwner() && star.getUncolonizedPlanets().length).sort((a, b) => {
+    return a.getDistance(fleet.getPosition()) - b.getDistance(fleet.getPosition());
+  })[0];
+}
+
 function queryEnemyFleetsSamePosition(world, findingFleet) {
   return world.queryIntersection([FleetState]).filter((fleet) => {
     return fleet.checkState('IDLE') && fleet.getOwner() !== findingFleet.getOwner() && findingFleet.getPosition().distanceSq(fleet.getPosition()) <= 0.01;
@@ -33,6 +51,9 @@ function queryUnownedStars(world) {
 }
 
 export {
+  queryClosestEnemyOrUnownedStar,
+  queryClosestOwnedStar,
+  queryClosestOwnedStarWithUncolonizedPlanets,
   queryEnemyFleetsSamePosition,
   queryNonEmptyFleets,
   queryUnownedStars

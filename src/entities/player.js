@@ -29,6 +29,16 @@ export default class Player extends Entity {
     return this.getScore();
   }
 
+  getAIUnassignedFleets() {
+    const ai = this.getComponent(AI);
+
+    if (ai) {
+      return this.getFleets().filter(fleet => fleet.id !== ai.colonizationFleet && fleet.id !== ai.combatFleet);
+    }
+
+    return [];
+  }
+
   getCredits() {
     return this.getComponent(Bank).credits;
   }

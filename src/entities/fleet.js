@@ -44,6 +44,11 @@ export default class Fleet extends Entity {
 
   buyShips(ships) {
     const player = this.getOwner();
+
+    if (!this.isAtTarget() || player !== this.getTarget().getOwner()) {
+      return false;
+    }
+
     const fleetComposition = this.getComponent(FleetComposition);
     const {
       colony = 0,
@@ -52,7 +57,7 @@ export default class Fleet extends Entity {
     let totalCost = 0;
 
     totalCost += colony * 1000;
-    totalCost += frigate * 15;
+    totalCost += frigate * 1500;
 
     if (player.spendCredits(totalCost)) {
       fleetComposition.colony += colony;
@@ -96,6 +101,10 @@ export default class Fleet extends Entity {
   }
 
   isAtTarget() {
+    if (!this.getTarget()) {
+      return false;
+    }
+
     return this.getTarget().getDistance(this.getPosition()) <= 0.01;
   }
 
