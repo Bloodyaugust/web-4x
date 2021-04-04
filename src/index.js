@@ -19,6 +19,7 @@ import Inbox from './components/inbox.js';
 import Owner from './components/owner.js';
 import Population from './components/population.js';
 import Position from './components/position.js';
+import Score from './components/score.js';
 import StarData from './components/star-data.js';
 
 // Entities
@@ -32,6 +33,7 @@ import AISystem from './systems/ai.js';
 import Colonization from './systems/colonization.js';
 import FleetCombat from './systems/fleet-combat.js';
 import FleetMovement from './systems/fleet-movement.js';
+import GameWin from './systems/game-win.js';
 import Income from './systems/income.js';
 import PopulationGrowth from './systems/population-growth.js';
 
@@ -52,6 +54,7 @@ world.registerComponent(Inbox);
 world.registerComponent(Owner);
 world.registerComponent(Population);
 world.registerComponent(Position);
+world.registerComponent(Score);
 world.registerComponent(StarData);
 
 // Add all systems
@@ -59,6 +62,7 @@ world.addSystem(new AISystem());
 world.addSystem(new Colonization());
 world.addSystem(new FleetCombat());
 world.addSystem(new FleetMovement());
+world.addSystem(new GameWin());
 world.addSystem(new Income());
 world.addSystem(new PopulationGrowth());
 

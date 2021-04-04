@@ -14,10 +14,12 @@ export default class Income extends System {
       const population = entity.getComponent(Population);
       const owningPlayer = entity.getOwner();
 
-      if (population.amount > 0 && owningPlayer) {
+      if (population.amount > 0 && owningPlayer && !owningPlayer.isDefeated()) {
         const playerBank = owningPlayer.getComponent(Bank);
+        const income = population.amount * 100 * deltaTime;
 
-        playerBank.credits += population.amount * 100 * deltaTime;
+        playerBank.credits += income;
+        owningPlayer.addScore(income / 5000);
       }
     });
   }

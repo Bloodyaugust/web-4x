@@ -12,9 +12,14 @@ export default class PopulationGrowth extends System {
 
     planets.forEach((planet) => {
       const population = planet.getComponent(Population);
-      let newPopulation = population.amount + ((0.001 * population.amount) * deltaTime);
+      const populationGrown = (0.001 * population.amount) * deltaTime;
+      const owningPlayer = planet.getOwner();
+      let newPopulation = population.amount + populationGrown;
       newPopulation = clamp(newPopulation, newPopulation, 1000); // Cap based on planet size
 
+      if (owningPlayer && !owningPlayer.isDefeated()) {
+        owningPlayer.addScore(newPopulation - population.amount);
+      }
       population.amount = newPopulation;
     });
   }

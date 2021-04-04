@@ -9,7 +9,6 @@ export default class FleetState extends Component {
   constructor(star) {
     super();
 
-    this.colonizeTarget = false;
     this.state = null;
     this.target = star;
 

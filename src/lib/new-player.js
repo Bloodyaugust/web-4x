@@ -22,7 +22,6 @@ export default function newPlayer(world, ai) {
     colony: 1,
     frigate: 1,
   }, playerStar));
-  playerFleet.setColonizing(true);
 
   return player;
 }

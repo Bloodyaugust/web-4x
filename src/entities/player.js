@@ -5,6 +5,7 @@ import Inbox from '../components/inbox.js';
 import AI from '../components/ai.js';
 import FleetState from '../components/fleet/fleet-state.js';
 import StarData from '../components/star-data.js';
+import Score from '../components/score.js';
 
 export default class Player extends Entity {
   constructor(ai) {
@@ -12,6 +13,7 @@ export default class Player extends Entity {
 
     this.components.push(new Bank());
     this.components.push(new Inbox());
+    this.components.push(new Score());
 
     if (ai) {
       this.components.push(new AI());
@@ -22,6 +24,11 @@ export default class Player extends Entity {
     this.getComponent(Inbox).events.push(event);
   }
 
+  addScore(amount) {
+    this.getComponent(Score).score += amount;
+    return this.getScore();
+  }
+
   getCredits() {
     return this.getComponent(Bank).credits;
   }
@@ -30,6 +37,10 @@ export default class Player extends Entity {
     return this.world.queryIntersection([FleetState]).filter((fleet) => {
       return fleet.getOwner() === this;
     });
+  }
+
+  getScore() {
+    return this.getComponent(Score).score;
   }
 
   getStars() {
@@ -57,11 +68,16 @@ export default class Player extends Entity {
     return this.hasComponent(AI);
   }
 
+  isDefeated() {
+    return this.getComponent(Score).defeated;
+  }
+
   toJSON() {
     // console.time('player response');
     const response = {
       id: this.id,
       ai: this.isAI(),
+      defeated: this.isDefeated(),
       events: this.getComponent(Inbox).events,
       bank: this.getComponent(Bank),
       ownedEntities: this.world.queryIntersection([Owner]).filter((ownedEntity) => {
@@ -71,7 +87,8 @@ export default class Player extends Entity {
           type: playerEntity.constructor.name,
           id: playerEntity.id
         };
-      })
+      }),
+      score: this.getScore()
     };
     // console.timeEnd('player response');
     return response;

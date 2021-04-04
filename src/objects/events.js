@@ -12,6 +12,7 @@ const EVENTS = Object.freeze({
   FLEET_COMBAT: 7,
   FLEET_DESTROYED: 8,
   FLEET_DAMAGED: 9,
+  GAME_WON: 10,
 });
 
 const EVENT_STRINGS = Object.freeze({
@@ -25,6 +26,7 @@ const EVENT_STRINGS = Object.freeze({
   7: 'Fleet engaged in combat',
   8: 'Fleet destroyed in combat',
   9: 'Fleet damaged in combat',
+  10: 'Game won',
 });
 
 class GameEvent {
@@ -34,6 +36,14 @@ class GameEvent {
     this.time = new Date();
     this.type = type || EVENTS.GAME_EVENT;
     this.message = EVENT_STRINGS[this.type];
+  }
+}
+
+class GameWonEvent extends GameEvent {
+  constructor(player) {
+    super(EVENTS.GAME_WON);
+
+    this.player = player.id;
   }
 }
 
@@ -122,5 +132,6 @@ export {
   FleetDestroyedEvent,
   FleetTargetedEvent,
   SystemCapturedEvent,
-  GameEvent
+  GameEvent,
+  GameWonEvent,
 };

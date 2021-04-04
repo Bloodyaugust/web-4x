@@ -117,6 +117,17 @@ export default function initializeRoutes(app, world) {
       return entity.constructor.name === 'Star' && entity.getComponent(Owner).player === player;
     }));
   });
+  app.get('/player/:id/score', (request, response) => {
+    const { id } = request.params;
+    const player = world.entities[id];
+
+    // console.log(`Getting player score: ${id}`);
+
+    response.json({
+      defeated: player.isDefeated(),
+      score: player.getScore()
+    });
+  });
   app.get('/player/:id/planet', (request, response) => {
     const { id } = request.params;
     const player = world.entities[id];

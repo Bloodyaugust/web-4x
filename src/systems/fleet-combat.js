@@ -19,6 +19,7 @@ export default class FleetCombat extends System {
 
         if (totalDamage > 0) {
           fleet.getOwner().addEvent(new FleetCombatEvent(fleet, enemyFleets, totalDamage));
+          fleet.getOwner().addScore(totalDamage);
         }
       }
     });

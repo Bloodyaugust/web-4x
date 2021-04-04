@@ -91,12 +91,16 @@ export default class Fleet extends Entity {
     return this.getComponent(Position).position;
   }
 
-  isIdle() {
-    return this.getComponent(FleetState).checkState('IDLE');
+  getTarget() {
+    return this.getComponent(FleetState).target;
   }
 
-  setColonizing(colonize) {
-    this.getComponent(FleetState).colonizeTarget = colonize;
+  isAtTarget() {
+    return this.getTarget().getDistance(this.getPosition()) <= 0.01;
+  }
+
+  isIdle() {
+    return this.getComponent(FleetState).checkState('IDLE');
   }
 
   target(star) {
