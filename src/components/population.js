@@ -1,14 +1,9 @@
-import ape from 'ape-ecs';
+import { Component } from '../lib/component.js';
 
-class Population extends ape.Component {
-  colonize() {
-    this.amount = 1;
-    this.update();
+export default class Population extends Component {
+  constructor(amount = 0) {
+    super();
+
+    this.amount = amount; // In millions of beings
   }
 }
-
-Population.properties = {
-  amount: 0 // Millions
-}
-
-export { Population };

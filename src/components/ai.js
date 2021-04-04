@@ -1,17 +1,10 @@
-import ape from 'ape-ecs';
+import { Component } from '../lib/component.js';
 
-const DIFFICULTIES = Object.freeze({
-  EASY: 0
-});
+export default class AI extends Component {
+  constructor() {
+    super();
 
-class AI extends ape.Component {
-  init(difficulty) {
-    this.difficulty = difficulty || DIFFICULTIES.EASY;
+    this.colonizationFleet = null;
+    this.combatFleet = null;
   }
 }
-
-AI.properties = {
-  difficulty: 0
-}
-
-export { AI, DIFFICULTIES };

@@ -1,9 +1,10 @@
-import ape from 'ape-ecs';
+import { default as Victor } from 'victor';
+import { Component } from '../lib/component.js';
 
-class Position extends ape.Component {}
+export default class Position extends Component {
+  constructor(startingPosition = Victor(0, 0)) {
+    super();
 
-Position.properties = {
-  vector: null
+    this.position = startingPosition;
+  }
 }
-
-export { Position };

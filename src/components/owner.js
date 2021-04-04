@@ -1,9 +1,9 @@
-import ape from 'ape-ecs';
+import { Component } from '../lib/component.js';
 
-class Owner extends ape.Component {}
+export default class Owner extends Component {
+  constructor(player = null) {
+    super();
 
-Owner.properties = {
-  owner: ape.EntityRef
+    this.player = player;
+  }
 }
-
-export { Owner };

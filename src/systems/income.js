@@ -1,28 +1,26 @@
-import ape from 'ape-ecs';
+import { System } from '../lib/system.js';
+import Bank from '../components/bank.js';
+import Population from '../components/population.js';
 
-class Income extends ape.System {
-  init() {
-    this.mainQuery = this.createQuery().fromAll('Population').persist();
+export default class Income extends System {
+  constructor() {
+    super();
   }
 
-  update(tick) {
-    const planets = this.mainQuery.execute();
+  update(deltaTime) {
+    const entities = this.world.queryIntersection([Population]);
 
-    for (const planet of planets) {
-      // Find all planets whose star is owned, grab player id
-      // Increment player energy
-      const star = this.world.getEntity(planet.c.data.star);
+    entities.forEach((entity) => {
+      const population = entity.getComponent(Population);
+      const owningPlayer = entity.getOwner();
 
-      if (star.c.owner.owner !== null) {
-        // console.log(`Adding income to player ${star.c.owner.ownerID}`);
-        const player = star.c.owner.owner;
-        const population = planet.getOne('Population');
+      if (population.amount > 0 && owningPlayer && !owningPlayer.isDefeated()) {
+        const playerBank = owningPlayer.getComponent(Bank);
+        const income = population.amount * 100 * deltaTime;
 
-        player.c.data.energy += population.amount * 5;
-        player.c.data.update();
+        playerBank.credits += income;
+        owningPlayer.addScore(income / 5000);
       }
-    }
+    });
   }
 }
-
-export { Income };

@@ -1,10 +1,10 @@
-import ape from 'ape-ecs';
+import { Component } from '../lib/component.js';
 
-class StarData extends ape.Component {}
+export default class StarData extends Component {
+  constructor(spectralClass) {
+    super();
 
-StarData.properties = {
-  class: null,
-  planets: ape.EntitySet
+    this.planets = [];
+    this.spectralClass = spectralClass;
+  }
 }
-
-export { StarData };
